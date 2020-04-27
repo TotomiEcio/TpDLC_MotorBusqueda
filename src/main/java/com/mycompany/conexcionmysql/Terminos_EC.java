@@ -11,10 +11,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -105,5 +108,24 @@ public class Terminos_EC implements Serializable {
     public String toString() {
         return "com.mycompany.conexcionmysql.Terminos[ hashTermino=" + hashTermino + " ]";
     }
-    
+
+    public void persist(Terminos_EC object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.mycompany_conexcionMySql_jar_1.0-SNAPSHOTPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
+    public void find(Terminos_EC object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("UnidadPersonas");
+        EntityManager em = emf.createEntityManager();
+        Terminos_EC yo = em.find(Terminos_EC.class, object.getNomTermino());    
+    }    
 }
