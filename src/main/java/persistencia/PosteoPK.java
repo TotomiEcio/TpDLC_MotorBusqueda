@@ -3,31 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.conexcionmysql;
+package persistencia;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author tecio
  */
 @Embeddable
-public class PosteosPK_EC implements Serializable {
+public class PosteoPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "hashTer")
+    @NotNull
+    @Column(name = "hashTermino")
     private int hashTer;
     @Basic(optional = false)
-    @Column(name = "hashDoc")
+    @NotNull
+    @Column(name = "hashDocumentos")
     private int hashDoc;
 
-    public PosteosPK_EC() {
+    public PosteoPK() {
     }
 
-    public PosteosPK_EC(int hashTer, int hashDoc) {
+    public PosteoPK(int hashTer, int hashDoc) {
         this.hashTer = hashTer;
         this.hashDoc = hashDoc;
     }
@@ -59,10 +62,10 @@ public class PosteosPK_EC implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PosteosPK_EC)) {
+        if (!(object instanceof PosteoPK)) {
             return false;
         }
-        PosteosPK_EC other = (PosteosPK_EC) object;
+        PosteoPK other = (PosteoPK) object;
         if (this.hashTer != other.hashTer) {
             return false;
         }
@@ -74,7 +77,7 @@ public class PosteosPK_EC implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.conexcionmysql.PosteosPK[ hashTer=" + hashTer + ", hashDoc=" + hashDoc + " ]";
+        return "persistencia.PosteoPK[ hashTer=" + hashTer + ", hashDoc=" + hashDoc + " ]";
     }
     
 }

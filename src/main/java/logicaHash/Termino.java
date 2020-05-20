@@ -68,6 +68,9 @@ public class Termino {
             posteo.put(d.hashCode(), d);
             posteo.get(d.hashCode()).addCant();
         }
+        if(posteo.get(d.hashCode()).getCant() > maxTermFrec){
+            maxTermFrec = posteo.get(d.hashCode()).getCant();
+        }
     }
 
     @Override
