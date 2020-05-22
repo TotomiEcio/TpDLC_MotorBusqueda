@@ -35,7 +35,7 @@ import persistencia.*;
 
 public class scannerTxt { 
     private static Vocabulario vocabulario = new Vocabulario();
-    //hola
+    //hola loko
     private static final String todos = "D:\\Tomi\\Facultad\\4To\\DLC\\Motor de Busqueda\\DocumentosTP1-20200417T134605Z-001\\DocumentosTP1";
     private static final String prueba = "D:\\Tomi\\Facultad\\4To\\DLC\\Motor de Busqueda\\DocumentosPrueba";
     private static final String prueba2 = "D:\\Tomi\\Facultad\\4To\\DLC\\Motor de Busqueda\\DocumentosPrueba2";
