@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package scannerTxt;
+package Funciones;
 
 /*
     SELECT PARA PEDIR X PALABRA: 
@@ -13,8 +13,14 @@ package scannerTxt;
                 AND t.hashTermino=p.hashTermino
                 AND t.nombre='tomi'
             ORDER BY p.cant DESC;
+
+
+todo 
+    calcular bien el MaxTermFrec cuando inserta un doc nuevo
+
 */
 
+import persistencia.TerminosJpaController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Enumeration;
@@ -22,7 +28,6 @@ import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import logicaHash.*;
@@ -35,13 +40,11 @@ import persistencia.*;
 
 public class scannerTxt { 
     private static Vocabulario vocabulario = new Vocabulario();
-    //hola loko
     private static final String todos = "D:\\Tomi\\Facultad\\4To\\DLC\\Motor de Busqueda\\DocumentosTP1-20200417T134605Z-001\\DocumentosTP1";
     private static final String prueba = "D:\\Tomi\\Facultad\\4To\\DLC\\Motor de Busqueda\\DocumentosPrueba";
     private static final String prueba2 = "D:\\Tomi\\Facultad\\4To\\DLC\\Motor de Busqueda\\DocumentosPrueba2";
 
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("doc_PU");
-    
     private static DocumentosJpaController docJpa;
     private static TerminosJpaController terJpa;
     private static PosteoJpaController postJpa;
@@ -49,7 +52,7 @@ public class scannerTxt {
     
     public static void main(String[] args) {
         try {
-            IndexarCarpeta(prueba2);
+            IndexarCarpeta(todos);
         } catch (Exception ex) {
             Logger.getLogger(scannerTxt.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,15 +67,20 @@ public class scannerTxt {
             Documento d = new Documento(arch.getName());
             Documentos_EC doc = new Documentos_EC(d.hashCode(), d.getNombre());
             docJpa = new DocumentosJpaController(emf);            
+            
+
             // Se fija si existe
-            if(docJpa.findDocumentos(doc.getHashDocumentos()) == null){
+/*            if(docJpa.findDocumentos(doc.getHashDocumentos()) == null){
                 try {
                     docJpa.create(doc);
+                    scannerArchivo(arch);
                 } catch (Exception e) {
                     System.out.println("No carga el documento: " + e.getMessage());
                 }
-                scannerArchivo(arch);
+
             } else{ System.out.println("Ya existe el documento");}
+*/
+            scannerArchivo(arch);
         }
         cargarDatosABDD();
     }
@@ -106,15 +114,14 @@ public class scannerTxt {
         
         while(e.hasMoreElements()){
             Termino pal = (Termino) e.nextElement();
-            Terminos_EC ter = new Terminos_EC(pal.hashCode(), pal.getNom());                
-
+            Terminos_EC ter = new Terminos_EC(pal.hashCode(), pal.getNom(), pal.getMTF(), pal.getPosteo().size());                
+            
             try {
-                terJpa.create(ter);
+                terJpa.edit(ter);
             } catch (Exception ex) {
                 System.out.println("Error al insertar el Hash del termino: " + pal.hashCode() + "---Error: " + ex.getMessage());
             }
-            
-            Enumeration f = pal.getPosteo().elements();
+            /*Enumeration f = pal.getPosteo().elements();
             
             while(f.hasMoreElements()){
                 Documento d = (Documento) f.nextElement();
@@ -128,9 +135,7 @@ public class scannerTxt {
                     System.out.println("Error al insertar Posteo: " + ex.getMessage());
                 }
             }
-            
-            
-            
+            */
         }
     }
 }

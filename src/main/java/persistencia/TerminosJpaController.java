@@ -5,8 +5,8 @@
  */
 package persistencia;
 
-import com.mycompany.conexcionmysql.exceptions.NonexistentEntityException;
-import com.mycompany.conexcionmysql.exceptions.PreexistingEntityException;
+import Funciones.exceptions.NonexistentEntityException;
+import Funciones.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,7 +15,6 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import persistencia.Terminos_EC;
 
 /**
  *

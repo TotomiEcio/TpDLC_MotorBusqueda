@@ -5,6 +5,7 @@
  */
 package logicaHash;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Objects;
 public class Documento {
     private String nombre;
     private int termFrec = 0;
+    private int idf;
 
     public Documento(String nombre) {
         this.nombre = nombre;
@@ -64,6 +66,12 @@ public class Documento {
         return "\n\tDocumento{" + "nombre=" + nombre + ", termFrec=" + termFrec + '}';
     }
     
+    private class SortByIdf implements Comparator<Documento>{
+        @Override
+        public int compare(Documento o1, Documento o2) {
+            return o2.idf - o1.idf;
+        }
+    }
     
     
     

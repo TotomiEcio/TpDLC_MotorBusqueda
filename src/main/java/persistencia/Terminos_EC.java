@@ -27,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Terminos.findAll", query = "SELECT t FROM Terminos_EC t"),
     @NamedQuery(name = "Terminos.findByHashTermino", query = "SELECT t FROM Terminos_EC t WHERE t.hashTermino = :hashTermino"),
-    @NamedQuery(name = "Terminos.findByNombre", query = "SELECT t FROM Terminos_EC t WHERE t.nombre = :nombre")})
+    @NamedQuery(name = "Terminos.findByNombre", query = "SELECT t FROM Terminos_EC t WHERE t.nombre = :nombre"),
+    @NamedQuery(name = "Terminos.findByMaxTermFrec", query = "SELECT t FROM Terminos_EC t WHERE t.maxTermFrec = :maxTermFrec"),
+    @NamedQuery(name = "Terminos.findByCantDocumentos", query = "SELECT t FROM Terminos_EC t WHERE t.cantDocumentos = :cantDocumentos")})
 public class Terminos_EC implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,20 +38,27 @@ public class Terminos_EC implements Serializable {
     @NotNull
     @Column(name = "hashTermino")
     private Integer hashTermino;
-    @Size(max = 30)
+    @Size(max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "maxTermFrec")
+    private Integer maxTermFrec;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "cantDocumentos")
+    private Integer cantDocumentos;
 
     public Terminos_EC() {
     }
 
-    public Terminos_EC(Integer hashTermino, String nombre) {
-        this.hashTermino = hashTermino;
-        this.nombre = nombre;
-    }
-
     public Terminos_EC(Integer hashTermino) {
         this.hashTermino = hashTermino;
+    }
+
+    public Terminos_EC(int hashCode, String nom, int mtf, int cantDocs) {
+        hashTermino  = hashCode;
+        nombre = nom;
+        maxTermFrec = mtf;
+        cantDocumentos = cantDocs;
     }
 
     public Integer getHashTermino() {
@@ -66,6 +75,22 @@ public class Terminos_EC implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getMaxTermFrec() {
+        return maxTermFrec;
+    }
+
+    public void setMaxTermFrec(Integer maxTermFrec) {
+        this.maxTermFrec = maxTermFrec;
+    }
+
+    public Integer getCantDocumentos() {
+        return cantDocumentos;
+    }
+
+    public void setCantDocumentos(Integer cantDocumentos) {
+        this.cantDocumentos = cantDocumentos;
     }
 
     @Override

@@ -34,6 +34,7 @@ public class Termino {
     public void setDocumento(Hashtable posteo) {
         this.posteo = posteo;
     }
+    public int getMTF(){ return maxTermFrec;}
 
     @Override
     public int hashCode() {
