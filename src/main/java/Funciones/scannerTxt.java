@@ -24,6 +24,7 @@ import persistencia.TerminosJpaController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -70,16 +71,15 @@ public class scannerTxt {
             
 
             // Se fija si existe
-/*            if(docJpa.findDocumentos(doc.getHashDocumentos()) == null){
+            if(docJpa.findDocumentos(doc.getHashDocumentos()) == null){
                 try {
                     docJpa.create(doc);
                     scannerArchivo(arch);
                 } catch (Exception e) {
                     System.out.println("No carga el documento: " + e.getMessage());
                 }
-
             } else{ System.out.println("Ya existe el documento");}
-*/
+
             scannerArchivo(arch);
         }
         cargarDatosABDD();
@@ -114,19 +114,33 @@ public class scannerTxt {
         
         while(e.hasMoreElements()){
             Termino pal = (Termino) e.nextElement();
-            Terminos_EC ter = new Terminos_EC(pal.hashCode(), pal.getNom(), pal.getMTF(), pal.getPosteo().size());                
+            Terminos_EC ter = new Terminos_EC(pal.hashCode(), pal.getNom(), pal.getMTF(), pal.getPosteo().size());
             
-            try {
-                terJpa.edit(ter);
-            } catch (Exception ex) {
-                System.out.println("Error al insertar el Hash del termino: " + pal.hashCode() + "---Error: " + ex.getMessage());
+            // Fijarme si ya existe el termino, sino tengo que hacer el create
+            Terminos_EC terBD = terJpa.findTerminos(ter.getHashTermino());
+            if(terBD == null){
+                try {
+                    terJpa.create(ter);
+                } catch (Exception ex) {
+                    System.out.println("Error al insertar el Hash del termino: " + pal.hashCode() + "---Error: " + ex.getMessage());
+                }
             }
-            /*Enumeration f = pal.getPosteo().elements();
-            
+            else
+            {
+                if(terBD.getMaxTermFrec() <= ter.getMaxTermFrec()){terBD.setMaxTermFrec(ter.getMaxTermFrec());}
+                terBD.setCantDocumentos(terBD.getCantDocumentos() + ter.getCantDocumentos());
+                try {
+                    terJpa.edit(terBD);
+                } catch (Exception ex) {
+                    System.out.println("Error al insertar el Hash del termino: " + pal.hashCode() + "---Error: " + ex.getMessage());
+                }
+            }
+            Enumeration f = pal.getPosteo().elements();
+
             while(f.hasMoreElements()){
                 Documento d = (Documento) f.nextElement();
                 Documentos_EC doc = new Documentos_EC(d.hashCode(), d.getNombre());
-                
+
                 Posteo_EC post = new Posteo_EC(pal.hashCode(), doc.hashCode(), d.getCant());
                 System.out.println();
                 try {
@@ -135,7 +149,6 @@ public class scannerTxt {
                     System.out.println("Error al insertar Posteo: " + ex.getMessage());
                 }
             }
-            */
         }
     }
 }

@@ -117,5 +117,9 @@ public class Terminos_EC implements Serializable {
     public String toString() {
         return "persistencia.Terminos[ hashTermino=" + hashTermino + " ]";
     }
+
+    public void setMaxTermFrec(int mtf) {
+        this.maxTermFrec = mtf;
+    }
     
 }
