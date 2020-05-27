@@ -18,8 +18,14 @@ public class buscarDocumento {
     private static DocumentosJpaController docJpa;
     
     private static Vocabulario voc = new Vocabulario();
-    private static Map<Integer, Documento> listDocs = new TreeMap<Integer, Documento>();
-
+    private static SortedMap<Integer, Documento> listDocs = new TreeMap<Integer, Documento>();
+    private static SortedSet<Map.Entry<Integer, Documento>> listaDocsOrdenada = new TreeSet<Map.Entry<Integer, Documento>>(
+            (Map.Entry<Integer, Documento> o1, Map.Entry<Integer, Documento> o2) -> {
+                Documento d1 = o1.getValue();
+                Documento d2 = o2.getValue();
+                return (int)((d2.getIdr() * 10000) - (d1.getIdr() * 10000));
+    });
+    
     public static void main(String[] args) {
         cargarVocabulario();
         
@@ -51,6 +57,9 @@ public class buscarDocumento {
             Termino t = new Termino(pal);
             buscarTermino(t, r);
         }
+        listaDocsOrdenada.addAll(listDocs.entrySet());
+        // Puedo agregar un listaDocsOrdenada.ToArray() y me devuelve un array de objetos 
+        System.out.println(listaDocsOrdenada.toString());
     }
         
     // Busca de la lista de posteo de un termino los r docs con mayor frecuencia y los agrega al vocabulario
@@ -105,7 +114,6 @@ public class buscarDocumento {
             d.setIdr(peso);
             insertarLD(d);
         }
-        System.out.println(listDocs.toString());
     }
 
     private static void insertarLD(Documento d) {

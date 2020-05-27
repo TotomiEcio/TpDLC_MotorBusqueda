@@ -5,14 +5,13 @@
  */
 package logicaHash;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 /**
  *
  * @author tecio
  */
-public class Documento implements Comparator<Documento>{
+public class Documento{
     private String nombre;
     private int termFrec = 0;
     private int idf;
@@ -72,10 +71,5 @@ public class Documento implements Comparator<Documento>{
     @Override
     public String toString() {
         return "Documento{" + "nombre=" + nombre + ", idr=" + idr + "} \n";
-    }
-
-    @Override
-    public int compare(Documento o1, Documento o2) {
-        return (int)((o2.idf * 10000) - (o1.idf  * 10000));
     }
 }
