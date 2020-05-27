@@ -139,5 +139,4 @@ public class TerminosJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

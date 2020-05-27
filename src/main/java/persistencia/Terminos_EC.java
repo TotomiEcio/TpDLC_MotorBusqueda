@@ -43,7 +43,6 @@ public class Terminos_EC implements Serializable {
     private String nombre;
     @Column(name = "maxTermFrec")
     private Integer maxTermFrec;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "cantDocumentos")
     private Integer cantDocumentos;
 

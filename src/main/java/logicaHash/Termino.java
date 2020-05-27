@@ -7,6 +7,7 @@ package logicaHash;
 
 import java.util.Hashtable;
 import java.util.Objects;
+import persistencia.Terminos_EC;
 
 /**
  *
@@ -16,11 +17,18 @@ public class Termino {
     private String nomTerm;
     private Hashtable<Integer, Documento> posteo;
     private int maxTermFrec;
+    private int cantDocumentos;
 
     public Termino(String nomTerm) {
         this.nomTerm = nomTerm;
         this.posteo = new Hashtable();
         maxTermFrec = 0;
+    }
+    
+    public Termino(Terminos_EC ter){
+        this.nomTerm = ter.getNombre();
+        this.maxTermFrec = ter.getMaxTermFrec();
+        this.cantDocumentos = ter.getCantDocumentos();
     }
     
     public String getNom() {
@@ -76,7 +84,7 @@ public class Termino {
 
     @Override
     public String toString() {
-        return "\nTermino{" + "nomTerm=" + nomTerm + ", posteo=" + posteo.toString() + ", maxTermFrec=" + maxTermFrec + '}';
+        return "\nTermino{" + "nomTerm=" + nomTerm + /*", posteo=" + posteo.toString() +*/ ", maxTermFrec=" + maxTermFrec + '}';
     }
 
     

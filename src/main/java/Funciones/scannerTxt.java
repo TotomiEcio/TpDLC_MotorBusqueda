@@ -13,19 +13,12 @@ package Funciones;
                 AND t.hashTermino=p.hashTermino
                 AND t.nombre='tomi'
             ORDER BY p.cant DESC;
-
-
-todo 
-    calcular bien el MaxTermFrec cuando inserta un doc nuevo
-
 */
 
 import persistencia.TerminosJpaController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,23 +58,24 @@ public class scannerTxt {
         for(File arch : ficheros) {
             cont ++;
             System.out.println(cont);
+            
             Documento d = new Documento(arch.getName());
             Documentos_EC doc = new Documentos_EC(d.hashCode(), d.getNombre());
-            docJpa = new DocumentosJpaController(emf);            
             
-
-            // Se fija si existe
+            docJpa = new DocumentosJpaController(emf);
+            // Se fija si ya existe el documento dentro de la BDD
             if(docJpa.findDocumentos(doc.getHashDocumentos()) == null){
                 try {
                     docJpa.create(doc);
-                    scannerArchivo(arch);
                 } catch (Exception e) {
                     System.out.println("No carga el documento: " + e.getMessage());
                 }
             } else{ System.out.println("Ya existe el documento");}
-
+            
+            // Escanea el archivo y carga la tabla Hash de Vocabulario con los terminos que tiene ese documento
             scannerArchivo(arch);
         }
+        
         cargarDatosABDD();
     }
 
@@ -116,7 +110,9 @@ public class scannerTxt {
             Termino pal = (Termino) e.nextElement();
             Terminos_EC ter = new Terminos_EC(pal.hashCode(), pal.getNom(), pal.getMTF(), pal.getPosteo().size());
             
-            // Fijarme si ya existe el termino, sino tengo que hacer el create
+            // Se fija si ya existe el termino en la base de datos
+            // Lo crea/edita dependiendo del caso
+            
             Terminos_EC terBD = terJpa.findTerminos(ter.getHashTermino());
             if(terBD == null){
                 try {
@@ -135,6 +131,8 @@ public class scannerTxt {
                     System.out.println("Error al insertar el Hash del termino: " + pal.hashCode() + "---Error: " + ex.getMessage());
                 }
             }
+            
+            // Inserto creo la lista de posteo para el termino
             Enumeration f = pal.getPosteo().elements();
 
             while(f.hasMoreElements()){

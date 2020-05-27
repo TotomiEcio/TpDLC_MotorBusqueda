@@ -26,6 +26,11 @@ public class Vocabulario {
             vocabulario.get(t.hashCode()).sumarFrec(d);
         }
     }
+    public void put(Termino t){
+        if(vocabulario.get(t.hashCode()) == null){
+            vocabulario.put(t.hashCode(), t);
+        }
+    }
     
     public Hashtable getVocabulario(){
         return vocabulario;
