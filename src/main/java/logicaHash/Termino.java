@@ -84,7 +84,10 @@ public class Termino {
 
     @Override
     public String toString() {
-        return "\nTermino{" + "nomTerm=" + nomTerm + /*", posteo=" + posteo.toString() +*/ ", maxTermFrec=" + maxTermFrec + '}';
+        // Esta comentado el posteo xq no me dejaba hacer el print del vocabulario cuando no tenia el posteo
+        String txt = "\nTermino{" + "nomTerm=" + nomTerm + ", maxTermFrec=" + maxTermFrec + '}';
+        if(posteo.values() != null){txt += ", posteo=" + posteo.toString();}
+        return txt;
     }
 
     

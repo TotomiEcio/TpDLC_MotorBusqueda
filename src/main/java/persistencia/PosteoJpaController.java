@@ -13,8 +13,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import logicaHash.Termino;
 import persistencia.Posteo_EC;
 import persistencia.PosteoPK;
 
@@ -145,4 +147,17 @@ public class PosteoJpaController implements Serializable {
         }
     }
     
+    public List<Posteo_EC> findPosteoForTermino(Termino t, int r){
+        EntityManager em = getEntityManager();
+        List<Posteo_EC> posteo = null;
+        try {
+            TypedQuery<Posteo_EC> query = em.createNamedQuery("Posteo.findByHashTerMTF", Posteo_EC.class);
+            posteo = query.setMaxResults(r).getResultList();
+        } catch (Exception e) {
+            System.out.println("Error al buscar la lista de posteo para el termino: " + t.getNom() + " \nEl error es: " + e.getMessage() );
+        }finally{
+            em.close();
+        }
+        return posteo;
+    }
 }
