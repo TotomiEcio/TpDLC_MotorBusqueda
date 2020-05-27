@@ -12,11 +12,11 @@ import java.util.Objects;
  *
  * @author tecio
  */
-public class Documento {
+public class Documento implements Comparator<Documento>{
     private String nombre;
     private int termFrec = 0;
     private int idf;
-    private int idr;
+    private double idr;
 
     public Documento(String nombre) {
         this.nombre = nombre;
@@ -38,10 +38,10 @@ public class Documento {
         this.termFrec ++;
     }
     
-    public int getIdr(){
+    public double getIdr(){
         return idr;
     }
-    public void setIdr(int idr){
+    public void setIdr(double idr){
         this.idr = idr;
     }
 
@@ -71,16 +71,11 @@ public class Documento {
 
     @Override
     public String toString() {
-        return "\n\tDocumento{" + "nombre=" + nombre + ", termFrec=" + termFrec + '}';
+        return "Documento{" + "nombre=" + nombre + ", idr=" + idr + "} \n";
     }
-    
-    private class SortByIdf implements Comparator<Documento>{
-        @Override
-        public int compare(Documento o1, Documento o2) {
-            return o2.idf - o1.idf;
-        }
+
+    @Override
+    public int compare(Documento o1, Documento o2) {
+        return (int)((o2.idf * 10000) - (o1.idf  * 10000));
     }
-    
-    
-    
 }
