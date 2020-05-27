@@ -13,6 +13,8 @@ import java.util.Hashtable;
  */
 public class Vocabulario {
     private final Hashtable<Integer, Termino> vocabulario;
+    
+    private int cantTotalDocs; // Se usa para validar si un termino es stopword o no
 
     public Vocabulario() {
         this.vocabulario = new Hashtable();
@@ -40,7 +42,14 @@ public class Vocabulario {
     public String toString() {
         return "Vocabulario{" + "vocabulario=" + vocabulario.toString() + '}';
     }
+
+    public int getCantTotalDocs() {
+        return cantTotalDocs;
+    }
     
+    public void setCantTotalDocs(int cantDocs){
+        this.cantTotalDocs = cantDocs;
+    }
     
 
     
