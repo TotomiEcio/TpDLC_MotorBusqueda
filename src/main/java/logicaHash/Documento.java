@@ -16,6 +16,7 @@ public class Documento {
     private String nombre;
     private int termFrec = 0;
     private int idf;
+    private int idr;
 
     public Documento(String nombre) {
         this.nombre = nombre;
@@ -35,6 +36,13 @@ public class Documento {
 
     public void addCant() {
         this.termFrec ++;
+    }
+    
+    public int getIdr(){
+        return idr;
+    }
+    public void setIdr(int idr){
+        this.idr = idr;
     }
 
     @Override

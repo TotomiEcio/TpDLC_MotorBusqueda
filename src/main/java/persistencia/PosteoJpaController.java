@@ -5,8 +5,8 @@
  */
 package persistencia;
 
-import com.mycompany.conexcionmysql.exceptions.exceptions.NonexistentEntityException;
-import com.mycompany.conexcionmysql.exceptions.exceptions.PreexistingEntityException;
+import com.mycompany.conexcionmysql.exceptions.NonexistentEntityException;
+import com.mycompany.conexcionmysql.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
