@@ -43,6 +43,7 @@ public class Termino {
         this.posteo = posteo;
     }
     public int getMTF(){ return maxTermFrec;}
+    public int getCantDocs(){return cantDocumentos;}
 
     @Override
     public int hashCode() {
@@ -86,7 +87,7 @@ public class Termino {
     public String toString() {
         // Esta comentado el posteo xq no me dejaba hacer el print del vocabulario cuando no tenia el posteo
         String txt = "\nTermino{" + "nomTerm=" + nomTerm + ", maxTermFrec=" + maxTermFrec + '}';
-        if(posteo.values() != null){txt += ", posteo=" + posteo.toString();}
+        //if(posteo.values() != null){txt += ", posteo=" + posteo.toString();}
         return txt;
     }
 

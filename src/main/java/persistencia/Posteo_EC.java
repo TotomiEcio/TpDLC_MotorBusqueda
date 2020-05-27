@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Posteo.findAll", query = "SELECT p FROM Posteo_EC p"),
     @NamedQuery(name = "Posteo.findByHashTer", query = "SELECT p FROM Posteo_EC p WHERE p.posteoPK.hashTer = :hashTer"),
-    @NamedQuery(name = "Posteo.findByHashTerMTF", query = "SELECT p FROM Posteo_EC p WHERE p.posteoPK.hashTer = :hashTer ORDER BY p.cant DESC"),
+    @NamedQuery(name = "Posteo.findByHashTerMTF",
+            query = "SELECT p FROM Posteo_EC p WHERE p.posteoPK.hashTer = :hashTer ORDER BY p.cant DESC"),
     @NamedQuery(name = "Posteo.findByHashDoc", query = "SELECT p FROM Posteo_EC p WHERE p.posteoPK.hashDoc = :hashDoc"),
     @NamedQuery(name = "Posteo.findByCant", query = "SELECT p FROM Posteo_EC p WHERE p.cant = :cant")})
 public class Posteo_EC implements Serializable {
