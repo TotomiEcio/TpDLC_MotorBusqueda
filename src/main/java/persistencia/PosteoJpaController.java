@@ -153,7 +153,7 @@ public class PosteoJpaController implements Serializable {
         try {
             TypedQuery<Posteo_EC> query = em.createNamedQuery("Posteo.findByHashTerMTF", Posteo_EC.class);
             query.setParameter("hashTer", t.hashCode());
-            posteo = query.setMaxResults(r).getResultList();
+            posteo = query.setMaxResults(r).getResultList(); //.setMaxResults(r)
         } catch (Exception e) {
             System.out.println("Error al buscar la lista de posteo para el termino: " + t.getNom() + " \nEl error es: " + e.getMessage() );
         }finally{

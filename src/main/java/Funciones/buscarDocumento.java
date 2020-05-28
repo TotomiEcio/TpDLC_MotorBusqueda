@@ -10,12 +10,22 @@ import persistencia.*;
 /**
  *
  * @author tecio
+ * 
+ * 
+ * TODO 
+ *      controlar palabras que no existen
+ *      ver que pasa cuando editas un documento
+ * 
+ * 
  */
 public class buscarDocumento {
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("doc_PU");
     private static TerminosJpaController terJpa;
     private static PosteoJpaController postJpa;
     private static DocumentosJpaController docJpa;
+
+    // Defino el porcentaje maximo de documentos en los que puede aparecer un termino para que no sea STOPWORD
+    private static double porcentaje = 0.5;
     
     private static Vocabulario voc = new Vocabulario();
     private static SortedMap<Integer, Documento> listDocs = new TreeMap<Integer, Documento>();
@@ -25,15 +35,19 @@ public class buscarDocumento {
                 Documento d2 = o2.getValue();
                 return (int)((d2.getIdr() * 10000) - (d1.getIdr() * 10000));
     });
-    
-    public static void main(String[] args) {
-        cargarVocabulario();
-        
-        String str = "tom and sawyer";   
-        int cantDoc = 5;
 
-        buscarTextoIngresado(str, cantDoc);
+    public static void main(String[] args) {
+        Object[] resultado;
+        resultado = buscar("tom and sawyer", 5);
+        System.out.println(imprimirResultado(resultado));
     }
+    
+    public static Object[] buscar(String str, int r){
+        cargarVocabulario();
+        buscarTextoIngresado(str, r);
+        return listaDocsOrdenada.toArray();
+    }
+    
     // Carga el vocabulario con todos los terminos que hay en la BDD
     private static void cargarVocabulario() {
         terJpa = new TerminosJpaController(emf);
@@ -58,18 +72,16 @@ public class buscarDocumento {
             buscarTermino(t, r);
         }
         listaDocsOrdenada.addAll(listDocs.entrySet());
-        // Puedo agregar un listaDocsOrdenada.ToArray() y me devuelve un array de objetos 
-        System.out.println(listaDocsOrdenada.toString());
     }
         
     // Busca de la lista de posteo de un termino los r docs con mayor frecuencia y los agrega al vocabulario
     private static void buscarTermino(Termino t, int r){
+        // Me fijo si es o no una stopWord
         boolean stopWord = validarStopWord(t);
         if(!stopWord){
             postJpa = new PosteoJpaController(emf);
             try {
                 List<Posteo_EC> posteo = postJpa.findPosteoForTermino(t, r);
-                System.out.println("Prueba");
                 cargarListaDocumentos(posteo);
             } catch (Exception e) {
                 System.out.println("Error al buscar la lista de posteo para el termino: " + t.getNom() + " \nEl error es: " + e.getMessage() );
@@ -81,7 +93,7 @@ public class buscarDocumento {
     // Valida si un termino es stopword o no
     private static boolean validarStopWord(Termino t) {
         boolean stopword = false;
-        int apariciones = 0;
+        int apariciones;
         try {
             apariciones = ((Termino)voc.getVocabulario().get(t.hashCode())).getCantDocs();
         } catch (Exception e) {
@@ -89,8 +101,6 @@ public class buscarDocumento {
         }
         int cantDocs = voc.getCantTotalDocs();
     
-        // Defino el porcentaje maximo de documentos en los que puede aparecer un termino para que no sea STOPWORD
-        double porcentaje = 0.5;
         double idfMin = cantDocs/(cantDocs*porcentaje);
         double idfCalc = cantDocs/apariciones;
         
@@ -99,6 +109,7 @@ public class buscarDocumento {
         return stopword;
     }
 
+    // Carga una lista provisoria con todos los documentos obtenidos
     private static void cargarListaDocumentos(List<Posteo_EC> posteo) {
         for(Object o : posteo){
             Object[] post = (Object[]) o;
@@ -116,6 +127,7 @@ public class buscarDocumento {
         }
     }
 
+    // Ordena la lista segun el indice de relevancia
     private static void insertarLD(Documento d) {
         if(listDocs.get(d.hashCode()) == null){
             listDocs.put(d.hashCode(), d);
@@ -125,6 +137,13 @@ public class buscarDocumento {
             d.setIdr(doc.getIdr() + d.getIdr());
             listDocs.replace(doc.hashCode(), doc, d);
         }
+    }
+
+    // Devuelve el resultado en un string
+    private static String imprimirResultado(Object[] resultado) {
+        String str = "";
+        for(Object o : resultado){str += o.toString();}
+        return str;
     }
 
 }
