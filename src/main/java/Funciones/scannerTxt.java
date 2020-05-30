@@ -5,16 +5,6 @@
  */
 package Funciones;
 
-/*
-    SELECT PARA PEDIR X PALABRA: 
-        SELECT d.nombre, t.nombre, p.cant 
-            FROM Documentos d, Posteo p, Terminos t 
-            WHERE d.hashDocumentos=p.hashDocumentos 
-                AND t.hashTermino=p.hashTermino
-                AND t.nombre='tomi'
-            ORDER BY p.cant DESC;
-*/
-
 import persistencia.TerminosJpaController;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,10 +33,9 @@ public class scannerTxt {
     private static TerminosJpaController terJpa;
     private static PosteoJpaController postJpa;
     
-    
     public static void main(String[] args) {
         try {
-            IndexarCarpeta(todos);
+            IndexarCarpeta(prueba2);
         } catch (Exception ex) {
             Logger.getLogger(scannerTxt.class.getName()).log(Level.SEVERE, null, ex);
         }

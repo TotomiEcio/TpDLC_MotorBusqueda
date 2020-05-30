@@ -16,6 +16,7 @@ public class Documento{
     private int termFrec = 0;
     private int idf;
     private double idr;
+    private String path;
 
     public Documento(String nombre) {
         this.nombre = nombre;
@@ -42,6 +43,13 @@ public class Documento{
     }
     public void setIdr(double idr){
         this.idr = idr;
+    }
+    
+    public void setPath(String path){
+        this.path = path;
+    }
+    public String getPath(){
+        return this.path;
     }
 
     @Override
@@ -70,6 +78,6 @@ public class Documento{
 
     @Override
     public String toString() {
-        return "Documento{" + "nombre=" + nombre + ", idr=" + idr + "} \n";
+        return "Documento{" + "nombre=" + nombre + ", idr=" + idr + ", path=" + path  + "} \n";
     }
 }
